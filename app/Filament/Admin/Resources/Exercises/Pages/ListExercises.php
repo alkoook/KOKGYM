@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Filament\Admin\Resources\Exercises\Pages;
+
+use App\Filament\Admin\Resources\Exercises\ExerciseResource;
+use Filament\Actions\CreateAction;
+use Filament\Resources\Pages\ListRecords;
+
+class ListExercises extends ListRecords
+{
+    protected static string $resource = ExerciseResource::class;
+
+    public function getTitle(): string
+    {
+        return 'إدارة التمارين'; 
+    }
+    protected function getHeaderActions(): array
+    {
+        return [
+            CreateAction::make()->label('إضافة تمرين جديد'),
+        ];
+    }
+}
