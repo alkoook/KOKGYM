@@ -20,9 +20,7 @@ class PostsTable
                 ->label('عنوان البوست')
                 ->sortable()
                 ->searchable(),
-
-            TextColumn::make('body')
-                ->label('المحتوى'),
+            TextColumn::make('user.name')->label('الناشر '),
 
             ImageColumn::make('image')
                 ->label('صورة البوست')

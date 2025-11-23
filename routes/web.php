@@ -60,3 +60,6 @@ Route::get('/supplements', [UserController::class, 'supplements'])
         return view('user.home'); // يعرض صفحة لوحة تحكم الأعضاء
     })->name('dashboard');
 });
+route::get('/test',function(){
+    return view('test');
+});

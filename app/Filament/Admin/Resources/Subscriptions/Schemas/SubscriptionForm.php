@@ -15,20 +15,25 @@ class SubscriptionForm
     {
         return $schema
             ->components([
-            Select::make('user_id')
-                    ->label('اللاعب')
-                    ->required() 
-                    ->relationship('user', 'name', 
+                Select::make('user_id')
+                ->label('اللاعب')
+                ->required()
+                ->relationship(
+                    'user',
+                    'name',
                     modifyQueryUsing: function (Builder $query) {
-                    $query->whereDoesntHave('roles',
-                     function (Builder $roleQuery) {
-                        $roleQuery->whereIn('name', ['admin', 'trainer']);
-                    });
-                    
-                    return $query;
-                })
-                    ->searchable() 
-                    ->preload(),
+                        $query
+                            // استبعاد الأدمن والمدربين
+                            ->whereDoesntHave('roles', function (Builder $roleQuery) {
+                                $roleQuery->whereIn('name', ['admin', 'trainer']);
+                            })
+
+                            // استبعاد اللاعبين الذين لديهم اشتراك سابق
+                            ->whereDoesntHave('subscriptions');
+                    }
+                )
+                ->searchable()
+                ->preload(),
                 
                 Select::make('membership_id')
                 ->label('نوع الاشتراك')

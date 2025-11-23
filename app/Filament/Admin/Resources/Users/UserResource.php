@@ -95,7 +95,6 @@ class UserResource extends Resource
                         return $query->orderBy('birth_date', $direction);
                     }),])
                 ->actions([
-            EditAction::make()->label('تعديل'),
             DeleteAction::make()->label('حذف'),
         ])
         ->bulkActions([
@@ -117,7 +116,7 @@ class UserResource extends Resource
         return [
             'index' => ListUsers::route('/'),
             'create' => CreateUser::route('/create'),
-            'edit' => EditUser::route('/{record}/edit'),
+            // 'edit' => EditUser::route('/{record}/edit'),
         ];
     }
 }

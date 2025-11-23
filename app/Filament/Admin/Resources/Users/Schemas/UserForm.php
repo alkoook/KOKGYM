@@ -31,12 +31,6 @@ class UserForm
                 DatePicker::make('birth_date')->label('تاريخ الميلاد')->required(),
                 TextInput::make('phone')->label('رقم الجوال')->tel()->required(),
 
-              FileUpload::make('photo')
-                ->label('الصورة')
-                ->disk('members')
-                ->directory('')
-                ->visibility('public')
-                ->image(),
 
 
                 TextInput::make('uid')
@@ -54,7 +48,6 @@ class UserForm
                     ->numeric()
                     ->minValue(20)
                     ->maxValue(400)
-                    ->step('0.1')
                     ->nullable(),
                 // حقل اختيار الدور (باستخدام Spatie)
                 Select::make('role')
@@ -64,7 +57,15 @@ class UserForm
                     'trainer' => 'مدرب',
                     'member'  => 'متدرب',
                 ])
-                    ->required()
+                    ->required(),
+
+
+                FileUpload::make('photo')
+                ->label('الصورة')
+                ->disk('members')
+                ->directory('')
+                ->visibility('public')
+                ->image(),
             ])
             ->columns(2);
     }

@@ -21,14 +21,17 @@ class CreateUser extends CreateRecord
         return 'إضافة مستخدم جديد';
     }
 
-  protected function handleRecordCreation(array $data): Model
+protected function handleRecordCreation(array $data): Model
 {
-    // توليد UID عشوائي وفريد
-    do {
-        $uid = rand(1000, 9999);
-    } while (User::where('uid', $uid)->exists());
+    // إذا المستخدم ما كتب UID → ولّد واحد
+    if (empty($data['uid'])) {
 
-    $data['uid'] = $uid;
+        do {
+            $uid = rand(1000, 9999);
+        } while (User::where('uid', $uid)->exists());
+
+        $data['uid'] = $uid;
+    }
 
     // استخرج الدور
     $userRole = $data['role'] ?? null;
@@ -42,8 +45,9 @@ class CreateUser extends CreateRecord
         $record->assignRole($userRole);
     }
 
-    return $record;
+    return $record; // 🔥 ضرورية يا زعيم
 }
+
         public function mount(): void
     {
         // توليد رقم عشوائي وفريد عند فتح الفورم

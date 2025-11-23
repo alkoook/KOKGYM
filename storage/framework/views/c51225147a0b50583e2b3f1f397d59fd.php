@@ -1,8 +1,7 @@
-@extends('dashboard')
-@section('content')
+<?php $__env->startSection('content'); ?>
 
-    {{-- منطق حساب BMI وجلب البيانات --}}
-    @php
+    
+    <?php
         use Carbon\Carbon;
         use App\Models\Post; // استيراد نموذج المنشورات
         use App\Models\Subscription;
@@ -114,7 +113,7 @@
         }
 
 
-    @endphp
+    ?>
 
     <div class="space-y-8">
         <!-- قسم البطاقات الإحصائية الشخصية (Stat Cards) -->
@@ -126,14 +125,14 @@
                     <p class="text-sm font-semibold text-cyan-400">الوزن الحالي</p>
                     <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354l-4.243 4.243a1 1 0 00-.293.707v5.657a1 1 0 00.293.707l4.243 4.243a1 1 0 001.414 0l4.243-4.243a1 1 0 00.293-.707V9.304a1 1 0 00-.293-.707L13.414 4.354a1 1 0 00-1.414 0z"></path></svg>
                 </div>
-                <p class="text-3xl font-extrabold text-white mt-2">{{ $weight }}</p>
+                <p class="text-3xl font-extrabold text-white mt-2"><?php echo e($weight); ?></p>
                 <p class="text-sm text-gray-400 mt-1">كيلوجرام</p>
 
                 <div class="flex items-center justify-between">
                     <p class="text-l font-semibold text-red-400"> الطول </p>
                     <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354l-4.243 4.243a1 1 0 00-.293.707v5.657a1 1 0 00.293.707l4.243 4.243a1 1 0 001.414 0l4.243-4.243a1 1 0 00.293-.707V9.304a1 1 0 00-.293-.707L13.414 4.354a1 1 0 00-1.414 0z"></path></svg>
                 </div>
-                <p class="text-3xl font-extrabold text-white mt-2">{{ $heightCm }}</p>
+                <p class="text-3xl font-extrabold text-white mt-2"><?php echo e($heightCm); ?></p>
                 <p class="text-sm text-gray-400 mt-1">سم</p>
             </div>
 
@@ -144,11 +143,12 @@
                     <svg class="w-6 h-6 text-lime-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10V5a2 2 0 00-2-2m0 0H7a2 2 0 00-2 2v5h9l4 4v7h-5m-9-6h9"></path></svg>
                 </div>
                 <p class="text-3xl font-extrabold text-white mt-2">
-                    {{ $bmi > 0 ? $bmi : 'N/A' }}
+                    <?php echo e($bmi > 0 ? $bmi : 'N/A'); ?>
+
                 </p>
-                {{-- عرض حالة الـ BMI بلون ديناميكي --}}
-                <p class="text-sm font-bold {{ $bmiColor }} mt-1">{{ $bmiStatus }}</p>
-                <p class="text-xs text-gray-400">الطول: {{ $heightCm }} سم</p>
+                
+                <p class="text-sm font-bold <?php echo e($bmiColor); ?> mt-1"><?php echo e($bmiStatus); ?></p>
+                <p class="text-xs text-gray-400">الطول: <?php echo e($heightCm); ?> سم</p>
             </div>
 
             <!-- البطاقة 3: أيام التدريب المتبقية -->
@@ -158,10 +158,11 @@
                     <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
                 <p class="text-3xl font-extrabold text-white mt-2">
-                    {{ $daysLeft > 0 ? $daysLeft : 'الاشتراك منتهي الصلاحية' }}
+                    <?php echo e($daysLeft > 0 ? $daysLeft : 'الاشتراك منتهي الصلاحية'); ?>
+
                 </p>
                 <p class="text-sm font-bold text-gray-300 mt-1">يوم متبقي</p>
-                <p class="text-xs text-gray-400"> الخطة: <span class="font-semibold text-indigo-300">{{ $membershipName }}</span></p>
+                <p class="text-xs text-gray-400"> الخطة: <span class="font-semibold text-indigo-300"><?php echo e($membershipName); ?></span></p>
             </div>
 
             <!-- البطاقة 4: هدف الوزن المثالي وتقدير المدة (التعديل الجديد) -->
@@ -171,23 +172,23 @@
                     <svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V5a2 2 0 00-2-2H4a2 2 0 00-2 2v7l4 4 4 4 4-4 4-4v-7h-5z"></path></svg>
                 </div>
                 <p class="text-xl font-extrabold text-white mt-2">
-                    @if ($weightDifference > 0)
-                        خسارة {{ $weightDifference }} كجم
-                    @elseif ($weightDifference < 0)
-                        زيادة {{ abs($weightDifference) }} كجم
-                    @else
+                    <?php if($weightDifference > 0): ?>
+                        خسارة <?php echo e($weightDifference); ?> كجم
+                    <?php elseif($weightDifference < 0): ?>
+                        زيادة <?php echo e(abs($weightDifference)); ?> كجم
+                    <?php else: ?>
                         الوزن المثالي محقق!
-                    @endif
+                    <?php endif; ?>
                 </p>
                 <p class="text-sm font-bold text-gray-300 mt-1">
-                    الوزن المستهدف: <span class="text-green-300">{{ $targetWeight }} كجم</span>
+                    الوزن المستهدف: <span class="text-green-300"><?php echo e($targetWeight); ?> كجم</span>
                 </p>
 
-                {{-- المدة المتوقعة --}}
+                
                 <div class="mt-2">
                     <p class="text-xs text-pink-300 font-semibold">المدة المتوقعة للوصول للهدف:</p>
-                    <p class="text-base font-extrabold text-white">{{ $expectedDuration }}</p>
-                    <p class="text-xs text-gray-400">بمعدل {{ $weeklyLossRate }} كجم/أسبوع</p>
+                    <p class="text-base font-extrabold text-white"><?php echo e($expectedDuration); ?></p>
+                    <p class="text-xs text-gray-400">بمعدل <?php echo e($weeklyLossRate); ?> كجم/أسبوع</p>
                 </div>
 
             </div>
@@ -201,34 +202,51 @@
             </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {{-- الحلقة التكرارية لعرض آخر 10 منشورات --}}
-                @forelse ($latestPosts as $post)
+                
+                <?php $__empty_1 = true; $__currentLoopData = $latestPosts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $post): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <div class="bg-gray-900 p-4 rounded-lg border-r-4 border-yellow-500 transition duration-200 hover:bg-gray-700/50 flex flex-col">
-                        <h3 class="text-lg font-bold text-yellow-400 mb-2">{{ $post->title }}</h3>
+                        <h3 class="text-lg font-bold text-yellow-400 mb-2"><?php echo e($post->title); ?></h3>
 
-                        {{-- عرض الصورة إذا كانت موجودة --}}
-                        @if ($post->image)
+                        
+                        <?php if($post->image): ?>
                             <div class="mb-3">
-                                {{-- تأكد من تعديل المسار (asset('storage/' ...)) ليتناسب مع إعدادات تخزين Laravel الخاصة بك --}}
-                                <img src="{{ asset('storage/posts/' . $post->image) }}" alt="صورة للمنشور: {{ $post->title }}" class="w-full h-40 object-cover rounded-md shadow-md">
+                                
+                                <img src="<?php echo e(asset('storage/posts/' . $post->image)); ?>" alt="صورة للمنشور: <?php echo e($post->title); ?>" class="w-full h-40 object-cover rounded-md shadow-md">
                             </div>
-                        @endif
+                        <?php endif; ?>
 
-                        {{-- عرض النص (مقتطف) --}}
-                        <p class="text-sm text-gray-300 line-clamp-3 mb-3 flex-grow">{{ Str::limit($post->body, 150) }}</p>
+                        
+                        <p class="text-sm text-gray-300 line-clamp-3 mb-3 flex-grow"><?php echo e(Str::limit($post->body, 150)); ?></p>
 
                     
-                    <livewire:show-post :postId="$post->id" :key="$post->id" />
+                    <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('show-post', ['postId' => $post->id]);
+
+$__html = app('livewire')->mount($__name, $__params, $post->id, $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
 
        
    
-                @empty
-                    {{-- في حال عدم وجود منشورات --}}
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                    
                     <div class="md:col-span-2 text-center text-gray-500 p-8 border border-gray-700 rounded-xl">
                         <p class="text-lg">لا توجد منشورات أو نصائح لعرضها حالياً. يرجى إضافة محتوى جديد!</p>
                     </div>
-                @endforelse
+                <?php endif; ?>
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('dashboard', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\DELL\Desktop\projects\kokGym\resources\views/user/home.blade.php ENDPATH**/ ?>
