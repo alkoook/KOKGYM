@@ -34,7 +34,9 @@ class User extends Authenticatable
         'phone',
         'photo',
         'trainer_id',
-        'uid'
+        'uid',
+        'weight',
+        'height'
     ];
       public function subscriptions()
     {

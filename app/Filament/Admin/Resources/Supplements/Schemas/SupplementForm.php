@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Supplements\Schemas;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -39,6 +40,11 @@ class SupplementForm
                     ->numeric()
                     ->minValue(1)
                     ->required(),
+                     TextInput::make('purpose')
+                    ->label('لمحة عن المكمل'),
+                    TextInput::make('origin_country')
+                    ->label('بلد المنشأ')
+                    ->required(),
 
                 TextInput::make('purchase_price')
                     ->label('سعر الشراء')
@@ -52,13 +58,15 @@ class SupplementForm
                     ->step(0.01)
                     ->required(),
 
-                TextInput::make('origin_country')
-                    ->label('بلد المنشأ')
-                    ->required(),
 
                 Textarea::make('usage')
                     ->label('طريقة الاستخدام')
                     ->required(),
+                FileUpload::make('image')->label('صورة المكمل')
+                ->disk('supplements')->visibility('public')
+                ->getUploadedFileNameForStorageUsing(function($file){
+                    return 'SUPPLEMEMNT_'. now()->format('Ymd_His'). '.'.$file->getClientOriginalExtension();
+                })
             ]);
     }
 }

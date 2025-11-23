@@ -14,7 +14,7 @@ class MembersChart extends ChartWidget
     public static function canView(): bool
     {
         $user = auth()->user();
-        return $user && $user->hasRole(['admin', 'trainer']);
+        return $user && $user->hasRole('admin');
     }
 
     public array|string|int $columnSpan = 'full';

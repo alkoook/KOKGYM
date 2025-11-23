@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('origin_country')->nullable();
             $table->text('usage')->nullable();
             $table->string('purpose')->nullable();
+            $table->text('image')->nullable();
             $table->timestamps(true);
         });
     }

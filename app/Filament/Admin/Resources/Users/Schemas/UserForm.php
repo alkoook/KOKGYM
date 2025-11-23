@@ -20,36 +20,36 @@ class UserForm
             ->schema([
                 TextInput::make('name')->label('الاسم')->required(),
                 TextInput::make('email')->label('البريد الإلكتروني')->email()->required(),
-                
+
                 // حقل كلمة المرور (إلزامي في الإنشاء، مخفي في التعديل)
                 TextInput::make('password')
                     ->label('كلمة المرور')
                     ->password()
                     ->required(fn (string $operation): bool => $operation === 'create') // إلزامي فقط في الإنشاء
                     ->hiddenOn('edit'),
-                    
+
                 DatePicker::make('birth_date')->label('تاريخ الميلاد')->required(),
                 TextInput::make('phone')->label('رقم الجوال')->tel()->required(),
-                
+
               FileUpload::make('photo')
                 ->label('الصورة')
                 ->disk('members')
                 ->directory('')
                 ->visibility('public')
                 ->image(),
-                
+
 
                 TextInput::make('uid')
                     ->label('UID'),
-                
-                TextInput::make('height_cm')
+
+                TextInput::make('height')
                     ->label('الطول (سم)')
                     ->numeric()
                     ->minValue(50)
                     ->maxValue(300)
                     ->nullable(),
 
-                TextInput::make('weight_kg')
+                TextInput::make('weight')
                     ->label('الوزن (كغ)')
                     ->numeric()
                     ->minValue(20)
@@ -66,6 +66,6 @@ class UserForm
                 ])
                     ->required()
             ])
-            ->columns(2); 
+            ->columns(2);
     }
 }

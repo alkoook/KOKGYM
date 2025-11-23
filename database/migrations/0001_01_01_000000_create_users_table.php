@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('uid')->nullable()->unique();
             $table->foreignId('trainer_id')->nullable()->constrained('users')->onDelete('set null');
             $table->unsignedInteger('height')->nullable();     // الطول بالسانتي
-            $table->unsignedInteger('weight_kg')->nullable();
+            $table->unsignedInteger('weight')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

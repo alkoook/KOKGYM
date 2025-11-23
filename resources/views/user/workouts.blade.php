@@ -1,27 +1,59 @@
 @extends('dashboard')
 
-@section('title', 'الخطة التدريبية')
+@section('title', 'قائمة التمارين المتاحة')
 
 @section('content')
+
+    {{--
+        ************************************************************************
+        تعليمات المتحكم (Controller) - هذا الملف يعتمد على البيانات القادمة من المتحكم:
+
+        1. يجب أن يقوم المتحكم بتمرير المتغير $exercises إلى هذا العرض (View).
+        2. يجب تحميل علاقات user_id و machine_id مسبقاً (Eager Loading) لضمان العمل السريع:
+
+        use App\Models\Exercise;
+        $exercises = Exercise::with(['user', 'machine'])->get();
+        return view('exercises', compact('exercises'));
+        ************************************************************************
+    --}}
+
+    @php
+        // هذا المتغير هو مساعد على مستوى العرض فقط لتنسيق الألوان
+        $levelColors = [
+            'beginner' => 'text-green-400 bg-green-900/50',
+            'intermediate' => 'text-yellow-400 bg-yellow-900/50',
+            'advanced' => 'text-red-400 bg-red-900/50',
+        ];
+    @endphp
+
     <!-- عنوان الصفحة داخل المحتوى الرئيسي -->
-    <h1 class="text-3xl font-extrabold text-white mb-6 border-b border-orange-500 pb-2">جدول التمارين الأسبوعي</h1>
+    <h1 class="text-3xl font-extrabold text-white mb-6 border-b border-orange-500 pb-2">قائمة التمارين المتاحة</h1>
 
     <!-- محتوى صفحة التمارين -->
     <div class="space-y-8">
         <p class="text-gray-300 text-lg">
-            إليك خطتك التدريبية الحالية والمصممة خصيصاً لتحقيق أقصى استفادة من جلساتك الرياضية.
+            هذه قائمة بجميع التمارين المتاحة في النظام، مرتبطة بالآلة ومستوى الصعوبة.
         </p>
 
-        <!-- جدول التمارين الأسبوعي -->
+        <!-- جدول التمارين المتاحة -->
         <div class="bg-gray-800 p-6 rounded-xl shadow-2xl overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-700">
                 <thead class="bg-gray-700">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider rounded-r-lg">
-                            اليوم
+                            اسم التمرين والوصف
                         </th>
                         <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
-                            التركيز العضلي
+                            الفئة
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
+                            المستوى
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
+                            الآلة
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
+                            المُضيف
                         </th>
                         <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider rounded-l-lg">
                             الإجراءات
@@ -29,104 +61,59 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-700">
-                    
-                    <!-- السبت: الصدر والترايسبس -->
-                    <tr class="hover:bg-gray-700 transition duration-150">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-white">السبت</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-orange-400">
-                            الصدر والذراع الخلفية (Chest & Triceps)
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button class="text-xs bg-orange-600 hover:bg-orange-700 text-white py-1 px-3 rounded-full transition duration-150">
-                                عرض التفاصيل
-                            </button>
-                        </td>
-                    </tr>
 
-                    <!-- الأحد: الظهر والبايسبس -->
-                    <tr class="hover:bg-gray-700 transition duration-150">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-white">الأحد</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-orange-400">
-                            الظهر والذراع الأمامية (Back & Biceps)
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button class="text-xs bg-orange-600 hover:bg-orange-700 text-white py-1 px-3 rounded-full transition duration-150">
-                                عرض التفاصيل
-                            </button>
-                        </td>
-                    </tr>
+                    {{-- استخدام المتغير $exercises القادم من المتحكم --}}
+                    @forelse ($exercises as $exercise)
+                        <tr class="hover:bg-gray-700 transition duration-150">
+                            {{-- 1. اسم التمرين والوصف --}}
+                            <td class="px-6 py-4">
+                                <p class="text-sm font-bold text-white">{{ $exercise->name }}</p>
+                                <p class="text-xs text-gray-400 mt-1 line-clamp-1" title="{{ $exercise->description }}">{{ $exercise->description }}</p>
+                            </td>
 
-                    <!-- الاثنين: الأرجل (كامل) -->
-                    <tr class="hover:bg-gray-700 transition duration-150 bg-gray-700/50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-white">الاثنين</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-orange-400">
-                            الأرجل (Legs - Quad & Hamstring)
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button class="text-xs bg-orange-600 hover:bg-orange-700 text-white py-1 px-3 rounded-full transition duration-150">
-                                عرض التفاصيل
-                            </button>
-                        </td>
-                    </tr>
+                            {{-- 2. الفئة (category) --}}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-orange-400">
+                                {{ $exercise->category }}
+                            </td>
 
-                    <!-- الثلاثاء: راحة -->
-                    <tr class="hover:bg-gray-700 transition duration-150">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-white">الثلاثاء</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 italic">
-                            راحة ونشاط خفيف (Active Rest)
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                             <span class="text-xs text-gray-500 py-1 px-3">
-                                لا يوجد تمرين رئيسي
-                            </span>
-                        </td>
-                    </tr>
-                    
-                    <!-- الأربعاء: الأكتاف والبطن -->
-                    <tr class="hover:bg-gray-700 transition duration-150">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-white">الأربعاء</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-orange-400">
-                            الأكتاف والبطن (Shoulders & Abs)
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button class="text-xs bg-orange-600 hover:bg-orange-700 text-white py-1 px-3 rounded-full transition duration-150">
-                                عرض التفاصيل
-                            </button>
-                        </td>
-                    </tr>
+                            {{-- 3. المستوى (level) --}}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold">
+                                @php
+                                    $levelClass = $levelColors[$exercise->level] ?? 'text-gray-400 bg-gray-600/50';
+                                @endphp
+                                <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-medium {{ $levelClass }}">
+                                    {{ $exercise->level }}
+                                </span>
+                            </td>
 
-                    <!-- الخميس: تمرين لكامل الجسم/كارديو -->
-                    <tr class="hover:bg-gray-700 transition duration-150">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-white">الخميس</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-orange-400">
-                            تمرين لكامل الجسم أو كارديو مكثف
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button class="text-xs bg-orange-600 hover:bg-orange-700 text-white py-1 px-3 rounded-full transition duration-150">
-                                عرض التفاصيل
-                            </button>
-                        </td>
-                    </tr>
-                    
-                    <!-- الجمعة: راحة -->
-                    <tr class="hover:bg-gray-700 transition duration-150">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-white">الجمعة</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 italic">
-                            راحة تامة وتعافي (Complete Rest)
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                             <span class="text-xs text-gray-500 py-1 px-3">
-                                لا يوجد تمرين رئيسي
-                            </span>
-                        </td>
-                    </tr>
+                            {{-- 4. الآلة المستخدمة (machine_id -> machine->name) --}}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-cyan-400">
+                                {{ $exercise->machine->name ?? 'وزن الجسم' }}
+                            </td>
+
+                            {{-- 5. أضيف بواسطة (user_id -> user->name) --}}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                                {{ $exercise->creator->name ?? 'النظام' }}
+                            </td>
+
+                            {{-- 6. الإجراءات (عرض التفاصيل/الفيديو) --}}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button onclick="window.location.href='{{ url('/exercises/' . $exercise->id) }}'" class="text-xs bg-orange-600 hover:bg-orange-700 text-white py-1 px-3 rounded-full transition duration-150">
+                                    عرض التفاصيل
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        {{-- في حال عدم وجود تمارين --}}
+                        <tr>
+                            <td colspan="6" class="px-6 py-8 text-center text-gray-500 italic">
+                                لا توجد تمارين متاحة حالياً. يرجى البدء بإضافة تمرين جديد.
+                            </td>
+                        </tr>
+                    @endforelse
+
                 </tbody>
             </table>
         </div>
-
-        <!-- زر الإجراء الرئيسي -->
-        <button class="mt-6 bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-8 rounded-xl transition duration-300 shadow-xl shadow-orange-500/20 transform hover:scale-[1.02]">
-            تعديل خطة التمارين
-        </button>
     </div>
 @endsection

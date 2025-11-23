@@ -14,7 +14,8 @@ class Program extends Model
         'created_by',
         'assign_to'
     ];
-    protected $appends = ['weekly_schedule'];
+    // تم إزالة weekly_schedule من $appends لتجنب تحميله تلقائياً في كل استعلام
+    // يمكن الوصول إليه مباشرة عند الحاجة: $program->weekly_schedule
     
     // علاقة Many-to-Many مع التمارين (Exercises)
  public function exercises()
@@ -41,7 +42,11 @@ public function programExercises()
 
 public function getWeeklyScheduleAttribute()
 {
-    // 🛑 إعادة البيانات بشكل خام ومسطح لاختبار الجلب 🛑
+    // تحميل التمارين فقط عند الحاجة (lazy loading)
+    if (!$this->relationLoaded('exercises')) {
+        $this->load('exercises');
+    }
+    
     return $this->exercises->map(function ($exercise) {
         return [
             'day' => $exercise->pivot->day,
@@ -50,7 +55,8 @@ public function getWeeklyScheduleAttribute()
             'reps' => $exercise->pivot->reps,
             'type' => $exercise->pivot->type,
         ];
-    })->values();}
+    })->values();
+}
     protected function modifyQueryForView(Builder $query): Builder
 {
     // تحميل علاقة التمارين (exercises) مسبقًا مع تحميل كائن التمرين نفسه (name)

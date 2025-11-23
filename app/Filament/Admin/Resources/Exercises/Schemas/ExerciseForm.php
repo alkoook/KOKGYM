@@ -26,7 +26,9 @@ class ExerciseForm
                 FileUpload::make('video')
                     ->label('فيديو التمرين')
                     ->acceptedFileTypes(['video/mp4', 'video/mpeg', 'video/avi'])
-                    ->disk('exercise')->directory('videos') 
+                    ->disk('exercise')->directory('videos')
+                    ->maxSize(512000)
+                    ->preserveFilenames()
                       ->getUploadedFileNameForStorageUsing(function ($file) {
                     return 'EXERCISE_'.now()->format('YmdHis') . '.' . $file->getClientOriginalExtension();
                 })

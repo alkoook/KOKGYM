@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             'password'=>Hash::make('123456'),
             'birth_date'=>'2000/6/14',
             'phone'=>'0956571037',
+            'birth_date'=> '2000-06-14'
         ])->assignRole('admin');
         Exercise::create([
             'name'=>'راحة',

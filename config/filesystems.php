@@ -64,7 +64,18 @@ return [
         'url' => env('APP_URL').'/storage/exercise',
         'visibility' => 'public',
     ],
-
+     'posts' => [
+        'driver' => 'local',
+        'root' => storage_path('app/public/posts'),
+        'url' => env('APP_URL').'/storage/posts',
+        'visibility' => 'public',
+    ],
+       'supplements' => [
+        'driver' => 'local',
+        'root' => storage_path('app/public/supplements'),
+        'url' => env('APP_URL').'/storage/supplements',
+        'visibility' => 'public',
+    ],
 
         's3' => [
             'driver' => 's3',
